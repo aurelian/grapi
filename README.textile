@@ -1,5 +1,11 @@
 h2. Grapi : Ruby client to access the unofficial Google Reader API
 
+h3. Install
+
+<pre>
+gem install grapi
+</pre>
+
 h3. Client Dependencies
 
 * "Curb":http://github.com/taf2/curb (gem install curb)
