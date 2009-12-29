@@ -10,11 +10,6 @@ h3. Client Dependencies
 
 * "Curb":http://github.com/taf2/curb (gem install curb)
 
-h3. ReadingList Parser
-
-* "Nokogiri":http://github.com/tenderlove/nokogiri (gem install nokogiri)
-* "Loofah":http://github.com/flavorjones/loofah (gem install loofah)
-
 h3. Synopsis
 
 <pre>
@@ -24,19 +19,26 @@ require "grapi"
 reader = Grapi::Reader.new
 reader.login USERNAME, PASSWORD
 
-require "grapi/parser"
-list= Grapi::Parser::ReadingList.parse reader.reading_list
+puts reader.reading_list
 
 </pre>
 
 h3. API methods
 
+Public API:
+
 * initialize(verbose= false)
 * login(USERNAME, PASSWORD)
-* reading_list(continuation=nil, dump_data= false)
+* reading_list(:continuation => nil, :dump_data => false, :output => "atom/json")
 * subscribe(feed_url, label=test)
 * unsubscribe(feed_url)
 * mark_as_read(entry_google_id)
+
+Protected API:
+
+* get(url)
+* post(url, params={})
+* post_with_token(url, params={})
 
 h3. License: see "MIT-LICENSE":http://github.com/aurelian/grapi/blob/master/MIT-LICENSE
 

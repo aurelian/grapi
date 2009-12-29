@@ -11,9 +11,6 @@ begin
     gem.homepage = "http://github.com/aurelian/grapi"
     gem.authors = ["Aurelian Oancea"]
     gem.add_dependency("curb", ">=0.6.1.0")
-    gem.add_dependency("nokogiri", ">=1.4.1")
-    gem.add_dependency("loofah", ">=0.4.1")
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
