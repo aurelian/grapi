@@ -1,12 +1,10 @@
-h2. Grapi : Client to access the unofficial Google Reader API
+h2. Grapi : Ruby client to access the unofficial Google Reader API
 
-h3. Dependencies
-
-h4. Client
+h3. Client Dependencies
 
 * "Curb":http://github.com/taf2/curb (gem install curb)
 
-h4. ReadingList Parser
+h3. ReadingList Parser
 
 * "Nokogiri":http://github.com/tenderlove/nokogiri (gem install nokogiri)
 * "Loofah":http://github.com/flavorjones/loofah (gem install loofah)
@@ -27,15 +25,16 @@ list= Grapi::Parser::ReadingList.parse reader.reading_list
 
 h3. API methods
 
-* login USERNAME, PASSWORD
-* reading_list
-* subscribe feed_url, label
-* unsubscribe feed_url
-* mark_as_read
+* initialize(verbose= false)
+* login(USERNAME, PASSWORD)
+* reading_list(continuation=nil, dump_data= false)
+* subscribe(feed_url, label=test)
+* unsubscribe(feed_url)
+* mark_as_read(entry_google_id)
 
-h3. License: see MIT-LICENSE
+h3. License: see "MIT-LICENSE":http://github.com/aurelian/grapi/blob/master/MIT-LICENSE
 
-h3. For: Contact / Ideas / Patches please use github infrastructure
+h3. For: contact - ideas - patches please use github infrastructure
 
 h3. Links
 
