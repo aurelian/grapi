@@ -32,7 +32,7 @@ Public API:
 * reading_list(:continuation => nil, :dump_data => false, :output => "atom/json")
 * subscribe(feed_url, label=test)
 * unsubscribe(feed_url)
-* mark_as_read(entry_google_id)
+* mark_as_read( entry_google_ids ) # can pass an entry id or an array of entries id
 
 Protected API:
 
