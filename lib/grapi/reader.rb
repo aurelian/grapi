@@ -2,6 +2,8 @@ require 'curl'
 
 module Grapi
 
+  class Error < StandardError;end
+
   class Reader
 
     VERSION = File.read(File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "VERSION"))).strip
@@ -41,8 +43,11 @@ module Grapi
     end
 
     def mark_as_read(entry_ids)
-      Array(entry_ids).map{|e|e.to_s}.slice(999).each do | slice |
-        post_with_token "http://www.google.com/reader/api/0/edit-tag", {"i" => slice, "a" => "user/-/state/com.google/read"}
+      ids = Array(entry_ids).map{|e|e.to_s}
+      while ids.size>0
+        ids_to_post= ids.slice!(0,250)
+        post_with_token "http://www.google.com/reader/api/0/edit-tag", {"i" => ids_to_post, "a" => "user/-/state/com.google/read"}
+        raise Grapi::Error.new("Failed to mark as read!\n#{@client.body_str}") if @client.response_code == 400
       end
       self
     end
