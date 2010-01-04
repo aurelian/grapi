@@ -40,8 +40,11 @@ module Grapi
       edit_subscription "feed/#{feed_url}", "subscribe", {"a" => "user/-/label/#{label}"}
     end
 
-    def mark_as_read(entry_id)
-      post_with_token "http://www.google.com/reader/api/0/edit-tag", {"i" => entry_id, "a" => "user/-/state/com.google/read"}
+    def mark_as_read(entry_ids)
+      Array(entry_ids).map{|e|e.to_s}.slice(999).each do | slice |
+        post_with_token "http://www.google.com/reader/api/0/edit-tag", {"i" => slice, "a" => "user/-/state/com.google/read"}
+      end
+      self
     end
 
     # options:
@@ -66,8 +69,14 @@ module Grapi
       end
 
       def post(url, params)
-        curl_post_params= params.inject([]){|p, e| p << ::Curl::PostField.content(e[0],e[1])}
-        make_request(url){|c| c.http_post(*curl_post_params)}
+        post_data= params.inject([]) do |memo, current|
+          memo<< if current[1].kind_of? Array
+            current[1].map{|it| ::Curl::PostField.content(current[0], it)}
+          else
+            ::Curl::PostField.content(current[0], current[1])
+          end
+        end
+        make_request(url){|c| c.http_post(*post_data)}
       end
 
       def post_with_token(url, params)
