@@ -29,8 +29,12 @@ module Grapi
         "service" => "reader",
         "accountType" => "HOSTED_OR_GOOGLE"
       }
-      @client.body_str.uncompress =~ /^SID=(.*)\n/
-      @client.headers['Cookie']= "SID=#{$1}"
+      if @client.body_str.uncompress =~ /^SID=(.*)\n/
+        @client.headers['Cookie']= "SID=#{$1}"
+      else
+        # TODO: can we handle Error=CaptchaRequired?
+        raise Error.new("Authentication failed with: #{@client.body_str.uncompress}")
+      end
       self
     end
 
@@ -56,12 +60,21 @@ module Grapi
     #   :continuation (default: nil) -> continuation string
     #   :dump_data (default: false) -> whether to write the response to a file in /tmp or not
     #   :output (default: atom) -> desired output (atom|json)
+    #   :items (default: 1000) -> amount of items to fetch
+    #   :label (default: nil) -> get only the items in label, by default fetch all items
     def reading_list(options={})
-      options= {:continuation => nil, :output => "atom", :dump_data => false}.update(options)
+      options= {:continuation => nil, :output => "atom", :dump_data => false, :items => 1000, :label => nil}.update(options)
+
+      base= if options[:label].nil?
+              "user/-/state/com.google/reading-list"
+            else
+              "user/-/label/#{options[:label]}"
+            end
+
       if options[:output] == "atom"
-        get "http://www.google.com/reader/atom/user/-/state/com.google/reading-list?xt=user/-/state/com.google/read&ck=#{Time.now.to_i*1000}&n=1000&c=#{options[:continuation]}"
+        get "http://www.google.com/reader/atom/#{base}?xt=user/-/state/com.google/read&ck=#{Time.now.to_i*1000}&n=#{options[:items]}&c=#{options[:continuation]}"
       else
-        get "http://www.google.com/reader/api/0/stream/contents/user/-/state/com.google/reading-list?output=#{options[:output]}&xt=user/-/state/com.google/read&ck=#{Time.now.to_i*1000}&n=1000&c=#{options[:continuation]}"
+        get "http://www.google.com/reader/api/0/stream/contents/#{base}?output=#{options[:output]}&xt=user/-/state/com.google/read&ck=#{Time.now.to_i*1000}&n=#{options[:items]}&c=#{options[:continuation]}"
       end
       response= @client.body_str.uncompress
       File.open("/tmp/#{Time.now.to_i}-reading_list.#{options[:output]}", "w"){|f|f<<response} if options[:dump_data]
