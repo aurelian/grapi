@@ -29,8 +29,8 @@ Public API:
 
 * initialize(verbose= false)
 * login(USERNAME, PASSWORD)
-* reading_list(:continuation => nil, :dump_data => false, :output => "atom/json")
-* subscribe(feed_url, label=test)
+* reading_list(:continuation => nil, :dump_data => false, :output => "atom/json", :items => 1000, :lable => nil)
+* subscribe(feed_url, label = test)
 * unsubscribe(feed_url)
 * mark_as_read( entry_google_ids ) # can pass an entry id or an array of entries id
 
@@ -48,5 +48,5 @@ h3. Links
 
 * "Friends of the Unofficial Google Reader API":http://groups.google.com/group/fougrapi
 * "pyrfeed":http://code.google.com/p/pyrfeed/wiki/GoogleReaderAPI
-* "Using the Google Reader API – Part 2":http://blog.martindoms.com/2009/10/16/using-the-google-reader-api-part-2/
+* "Using the Google Reader API - Part 2":http://blog.martindoms.com/2009/10/16/using-the-google-reader-api-part-2/
 
