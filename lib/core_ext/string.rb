@@ -1,4 +1,5 @@
 require 'zlib'
+require 'stringio'
 
 class String
   def uncompress
